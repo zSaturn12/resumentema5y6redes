@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen Interactivo - Tema 5 y 6 Redes</title>
+   <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #1e1e2e;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #a6e3a1;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    color: #89b4fa;
+    margin-top: 20px;
+}
+
+h3 {
+    color: #f9e2af;
+}
+
+.section {
+    margin-bottom: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toggle {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.toggle:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.toggle:active {
+    transform: translateY(0);
+}
+
+.content {
+    display: none;
+    padding: 20px;
+    background: #2a2a3e;
+    border-radius: 8px;
+    margin-top: 8px;
+    border-left: 4px solid #6366f1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#quizContainer {
+    background: #2a2a3e;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hidden {
+    display: none;
+}
+
+#question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #cdd6f4;
+    padding: 15px;
+    background: #313244;
+    border-radius: 8px;
+    border-left: 4px solid #89b4fa;
+}
+
+#answers button {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 2px solid #45475a;
+    background: #313244;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+#answers button:hover {
+    background: #45475a;
+    border-color: #6366f1;
+    transform: translateX(5px);
+}
+
+#answers button:active {
+    transform: scale(0.98);
+}
+
+#startTest {
+    display: block;
+    margin: 30px auto;
+    padding: 16px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(135deg, #a6e3a1 0%, #94e2d5 100%);
+    color: #1e1e2e;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#startTest:hover {
+    background: linear-gradient(135deg, #94e2d5 0%, #89dceb 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+#result {
+    background: #313244;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 2px solid #89b4fa;
+}
+
+#result h2 {
+    color: #a6e3a1;
+    text-align: center;
+}
+
+#result h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-top: 20px;
+    color: #f9e2af;
+}
+
+#result p {
+    font-size: 1.1rem;
+    margin: 12px 0;
+}
+
+.review-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #1e1e2e;
+    border-radius: 8px;
+}
+
+.review-item {
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 6px;
+    background: #2a2a3e;
+}
+
+.review-item.correct {
+    border-left: 4px solid #a6e3a1;
+}
+
+.review-item.incorrect {
+    border-left: 4px solid #f38ba8;
+}
+
+.review-question {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #cdd6f4;
+}
+
+.review-answer {
+    margin: 5px 0;
+    padding-left: 15px;
+}
+
+.review-answer.user-answer {
+    color: #f38ba8;
+}
+
+.review-answer.correct-answer {
+    color: #a6e3a1;
+}
+
+ul, ol {
+    padding-left: 25px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+code {
+    background: #313244;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #f9e2af;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .toggle {
+        font-size: 15px;
+        padding: 12px 14px;
+    }
+    
+    #question {
+        font-size: 1rem;
+    }
+    
+    #answers button {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+    </style>
+</head>
+<body>
+
+<h1>Resumen Interactivo - Tema 5 y 6 de Redes</h1>
+
+<!-- TEMA 5 -->
+<div class="section">
+    <button class="toggle">Tema 5 - Resumen Completo</button>
+    <div class="content">
+        <h2>5.1 Introducción</h2>
+        <p><b>ANSI/TIA/EIA 569:</b> Normas de espacios y recorridos de telecomunicaciones en edificios comerciales.</p>
+        <ul>
+            <li>Define las salas, armarios y canalizaciones por las que viajan los cables.</li>
+        </ul>
+        <p><b>ANSI/TIA/EIA 568:</b> Cableado de telecomunicaciones en edificios comerciales.</p>
+        <ul>
+            <li>Especifica los requisitos mínimos que debe cumplir el cableado.</li>
+            <li>Especifica la topología y distancias recomendadas.</li>
+            <li>Define los parámetros de desempeño de los cables.</li>
+        </ul>
+        <p><b>Cableado estructurado:</b></p>
+        <ul>
+            <li>Unificar todo el tendido de cable: voz, datos, video, climatización, etc.</li>
+            <li>Independizar el cableado de las aplicaciones.</li>
+            <li>Realizar cambios en el edificio y en la distribución de los puestos de trabajo.</li>
+            <li>Administración y mantenimiento más sencillo.</li>
+            <li>Proyectar una duración a largo plazo (más de 15 años).</li>
+            <li>Documentar los elementos y el proceso de instalación.</li>
+        </ul>
+
+        <h2>5.2 Espacios y recorridos (ANSI/TIA/EIA 569)</h2>
+        <p><b>1. Instalación de entrada:</b> Lugar por el que entran los servicios de telecomunicaciones al edificio y las conexiones con otros edificios.</p>
+        <p><b>2. Sala de equipos:</b> Lugar donde se ubican los equipos de telecomunicaciones comunes a todo el edificio.</p>
+        <ul>
+            <li>Evitar ubicar la sala en zonas próximas a tuberías de agua.</li>
+            <li>Facilitar el acceso para equipamiento de gran tamaño.</li>
+            <li>Debe estar muy cerca de la canalización de backbone (cableado vertical) por la cantidad de cable.</li>
+            <li>Evitar fuentes de ruido electromagnético y proveer correcta iluminación, sistemas de prevención de incendios y tomas de tierra.</li>
+        </ul>
+
+        <p><b>3. Canalización de backbone:</b></p>
+        <ul>
+            <li><b>Externas:</b> Entre edificios de la misma organización.</li>
+            <li><b>Internas:</b> Conectan la instalación de entrada (1) con la sala de equipos (2) y las salas de telecomunicaciones (4) de cada planta.</li>
+        </ul>
+        <p><i>Explicación sencilla:</i> Son los cables internos que llevan la conexión desde la entrada, pasan por la sala principal y llegan a cada planta.</p>
+
+        <p><b>4. Sala de telecomunicaciones:</b> Conexión entre canalización backbone y horizontal.</p>
+        <ul>
+            <li>Al menos una sala por planta.</li>
+            <li>Agregar otra si distancia >90m o superficie >1.000m².</li>
+            <li>Si hay varias salas, deben conectarse mediante backbone.</li>
+            <li>Situar lo más centrada posible.</li>
+        </ul>
+
+        <p><b>5. Canalización horizontal:</b> Conecta las salas de telecomunicaciones con las áreas de trabajo (cable par trenzado, coaxial, fibra óptica).</p>
+
+        <p><b>6. Áreas de trabajo:</b> Mesas, sillas, ordenadores, impresoras, teléfonos, etc. (Una clase es un área de trabajo).</p>
+
+        <h2>5.3 Cableado de telecomunicaciones (ANSI/TIA/EIA 568)</h2>
+        <p><b>1. Instalación de entrada:</b> Lugar por el que entran los servicios de telecomunicaciones.</p>
+        <p><b>2. Sala de equipos:</b> Armarios que recogen cableado de equipos comunes y vertical mediante patch panel.</p>
+
+        <p><b>3. Cableado de backbone:</b></p>
+        <ul>
+            <li>Externas: entre edificios.</li>
+            <li>Internas: desde instalación de entrada → sala de equipos → salas de telecomunicaciones.</li>
+            <li>Topología estrella jerárquica.</li>
+            <li>Cables: Par trenzado (UTP/STP/FTP) categoría 5e o 6, Fibra óptica.</li>
+        </ul>
+
+        <p><b>4. Sala y armarios:</b> Unión entre backbone y canalización horizontal.</p>
+        <p><b>5. Cableado horizontal:</b> Conecta áreas de trabajo con armario de comunicaciones.</p>
+        <ul>
+            <li>Topología estrella, cables sin uniones, máximo 90m.</li>
+            <li>Latiguillos: máximo 10m entre patch panel ↔ switch y roseta ↔ host, recomendados ≤5m.</li>
+            <li>Cable más usado: UTP categoría 5e o superior.</li>
+        </ul>
+
+        <p><b>6. Áreas de trabajo:</b> Latiguillos RJ-45 macho según estándares ANSI/TIA/EIA 568-A y 568-B.</p>
+    </div>
+</div>
+
+<!-- TEMA 6 -->
+<div class="section">
+    <button class="toggle">Tema 6 - Resumen Completo</button>
+    <div class="content">
+        <h2>1. Funciones Esenciales del Nivel de Enlace</h2>
+        <ul>
+            <li>El Nivel de Enlace asegura que el mensaje llegue libre de errores.</li>
+            <li>Diferencia con Nivel Físico: transmite señales, mientras Nivel de Enlace permite comunicación.</li>
+            <li>Se divide en dos subcapas:
+                <ul>
+                    <li>LLC (Control de Enlace Lógico): capa superior, software (driver).</li>
+                    <li>MAC (Control de Acceso al Medio): capa inferior, hardware (tarjeta de red).</li>
+                </ul>
+            </li>
+            <li>Funciones principales:
+                <ul>
+                    <li>Tramado (tramas)</li>
+                    <li>Control de acceso al medio</li>
+                    <li>Control de flujo</li>
+                    <li>Control de errores</li>
+                    <li>Direccionamiento físico (MAC)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>2. Tramado y Formatos Clave</h2>
+        <ul>
+            <li>Tramado: encapsula el paquete del nivel de red, añadiendo cabecera y cola.</li>
+            <li>Receptor: convierte señal binaria en tramas, extrae control y comprueba errores.</li>
+            <li>Formato de Trama PPP (WAN): comunicación directa entre dos equipos, usado en WAN (serie, líneas telefónicas, móvil, Wi-Fi, fibra óptica). Estructura: Indicador, Dirección, Control, Protocolo, DATOS, FCS, Indicador.</li>
+            <li>Formato de Trama Ethernet (LAN): estándar LAN cableada. Estructura: Preámbulo, Dirección Destino, Dirección Fuente, Protocolo/Longitud, DATOS (46-1500 bytes), FCS.</li>
+        </ul>
+
+        <h2>3. Control de Acceso al Medio (MAC)</h2>
+        <p>Determina cómo los dispositivos comparten el canal.</p>
+        <ul>
+            <li><b>Medio Repartido (Multiplexación)</b>
+                <ul>
+                    <li>TDM: turno de cada usuario (ej: red telefónica)</li>
+                    <li>FDM: ancho de banda dividido en bandas exclusivas (ATM, SDH, móvil)</li>
+                </ul>
+            </li>
+            <li><b>Medio Compartido</b>: Controlado (sin colisiones) y Basado en contienda (con colisiones)
+                <ul>
+                    <li>Paso de Testigo: Controlado, transmite solo si tiene el testigo. Uso: Token Bus, Token Ring, FDDI.</li>
+                    <li>CSMA/CD: Contienda, detecta colisión, espera periodo aleatorio y retransmite. Uso: LAN Ethernet.</li>
+                    <li>CSMA/CA: Contienda prevención, envía petición antes de transmitir con tramas RTS/CTS. Uso: Wi-Fi.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>4. Control de Flujo y Errores</h2>
+        <p><b>Control de Flujo:</b> Indica al emisor cuántos datos puede enviar antes de recibir ACK.</p>
+        <ul>
+            <li>Parada y espera: envía trama y espera ACK.</li>
+            <li>Ventana deslizante: envía múltiples paquetes antes de esperar ACK.</li>
+        </ul>
+        <p><b>Control de Errores:</b> Por redundancia:
+            <ul>
+                <li>Vertical (VCR/paridad)</li>
+                <li>Longitudinal (LCR)</li>
+                <li>Cíclica (CRC)</li>
+            </ul>
+        </p>
+
+        <h2>5. Direccionamiento Físico (MAC)</h2>
+        <ul>
+            <li>Dirección MAC: 12 dígitos hexadecimales (48 bits) identifica tarjeta o adaptador.</li>
+            <li>Únicas globalmente, escritas en hardware en fabricación.</li>
+            <li>Usadas en Ethernet, Token Ring, 802.11 y ATM.</li>
+            <li>Spoofing: se puede modificar vía software aunque sean únicas en hardware.</li>
+        </ul>
+    </div>
+</div>
+
+<hr>
+
+<h1>Test de 20 Preguntas</h1>
+<button id="startTest">Comenzar Test</button>
+
+<div id="quizContainer" class="hidden">
+    <div id="question"></div>
+    <div id="answers"></div>
+    <button id="nextBtn">Siguiente</button>
+</div>
+
+<div id="result" class="hidden"></div>
+
+<!-- <script src="script.js"></script> -->
+
+<script>
+    document.querySelectorAll(".toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const content = btn.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
+    });
+});
+
+// 100 PREGUNTAS BASADAS EN LOS TEMAS 5 Y 6
+const preguntas = [
+    // TEMA 5: CABLEADO ESTRUCTURADO - Normas y Espacios (20 preguntas)
+    { p: "¿Qué norma define espacios y recorridos de telecomunicaciones?", o:["ANSI/TIA/EIA 568","ANSI/TIA/EIA 569","IEEE 802.3","ISO 9001"], c:1 },
+    { p: "¿Qué norma especifica requisitos mínimos del cableado?", o:["ANSI/TIA/EIA 569","ANSI/TIA/EIA 568","IEEE 802.11","ISO 11801"], c:1 },
+    { p: "TRAMPA: ¿Cuántos años de duración proyecta el cableado estructurado?", o:["5 años","10 años","Más de 15 años","20 años exactos"], c:2 },
+    { p: "¿Qué unifica el cableado estructurado?", o:["Solo datos","Voz, datos, video, alarmas, etc.","Solo voz y datos","Solo equipos de red"], c:1 },
+    { p: "Ventaja del cableado estructurado:", o:["Es más barato","Independiza cableado de aplicaciones","Solo para redes pequeñas","Requiere menos cable"], c:1 },
+    { p: "¿Dónde entran los servicios de telecomunicaciones al edificio?", o:["Sala de equipos","Instalación de entrada","Área de trabajo","Canalización horizontal"], c:1 },
+    { p: "¿Qué contiene la sala de equipos?", o:["Sillas y mesas","Servidores, centrales telefónicas","Solo cables","Impresoras"], c:1 },
+    { p: "TRAMPA: ¿Dónde NO debe ubicarse la sala de equipos?", o:["Planta baja","Cerca de tuberías de agua","Centro del edificio","Cerca del backbone"], c:1 },
+    { p: "La sala de equipos debe estar cerca de:", o:["La entrada","La canalización backbone","Las ventanas","El parking"], c:1 },
+    { p: "¿Qué es la canalización de backbone?", o:["Cable horizontal","Conecta instalación entrada con sala equipos","Solo para fibra","Cable de usuario"], c:1 },
+    { p: "¿Cuántos tipos de canalización backbone hay?", o:["Uno","Dos: externa e interna","Tres","Cuatro"], c:1 },
+    { p: "Sala de telecomunicaciones conecta:", o:["PC con switch","Backbone con horizontal","Solo fibra","ISP con edificio"], c:1 },
+    { p: "¿Cuántas salas de telecomunicaciones mínimo por planta?", o:["Ninguna","Al menos una","Dos","Tres"], c:1 },
+    { p: "TRAMPA: Se añade otra sala de telecomunicaciones si:", o:["Hay más de 50 usuarios","Distancia supera 90m o superficie 1000m²","Distancia supera 100m","Superficie supera 500m²"], c:1 },
+    { p: "¿Dónde debe situarse la sala de telecomunicaciones?", o:["En una esquina","Lo más centrada posible","Cerca de ventanas","En el sótano"], c:1 },
+    { p: "La canalización horizontal conecta:", o:["Edificios","Salas telecomunicaciones con áreas trabajo","Plantas","Servidores"], c:1 },
+    { p: "¿Qué son las áreas de trabajo?", o:["Salas de servidores","Espacios con ordenadores, teléfonos","Armarios de red","Canalizaciones"], c:1 },
+    { p: "Tipos de cable en canalización horizontal:", o:["Solo UTP","Par trenzado, coaxial y fibra","Solo fibra","Solo coaxial"], c:1 },
+    { p: "¿Qué representa la instalación de entrada?", o:["Sala principal","Frontera entre proveedor y cliente","Área de trabajo","Backbone vertical"], c:1 },
+    { p: "La instalación de entrada conecta:", o:["PCs","Proveedor con backbone del edificio","Switches","Routers"], c:1 },
+
+    // TEMA 5: CABLEADO HORIZONTAL Y BACKBONE (25 preguntas)
+    { p: "Topología del cableado backbone:", o:["Bus","Anillo","Estrella jerárquica","Malla"], c:2 },
+    { p: "¿Desde dónde parte la estrella jerárquica?", o:["Área trabajo","Distribuidor principal en sala equipos","ISP","Router principal"], c:1 },
+    { p: "Tipos de cable aceptados para backbone:", o:["Solo UTP","UTP/STP/FTP Cat 5e/6 y fibra óptica","Solo fibra","Solo Cat 5e"], c:1 },
+    { p: "TRAMPA: Categoría mínima UTP para backbone:", o:["Cat 5","Cat 5e o 6","Cat 3","Cat 7"], c:1 },
+    { p: "Topología del cableado horizontal:", o:["Bus","Estrella desde armario comunicaciones","Anillo","Malla"], c:1 },
+    { p: "Distancia máxima cable horizontal (sin latiguillos):", o:["100m","50m","90m","80m"], c:2 },
+    { p: "Los cables horizontales van desde:", o:["Switch a PC","Patch panel a roseta sin uniones","Router a switch","Roseta a roseta"], c:1 },
+    { p: "¿Para qué se usan los latiguillos?", o:["Conectar edificios","Unir roseta-host y patch panel-switch","Solo para servidores","Backbone"], c:1 },
+    { p: "Distancia máxima total extremo a extremo:", o:["90m","100m","110m","120m"], c:1 },
+    { p: "TRAMPA: Longitud máxima de AMBOS latiguillos juntos:", o:["5m","10m","15m","20m"], c:1 },
+    { p: "Longitud recomendada de cada latiguillo:", o:["No más de 5m","No más de 10m","No más de 3m","Sin límite"], c:0 },
+    { p: "Cable más usado en áreas de trabajo:", o:["Coaxial","UTP Cat 5e o superior","Fibra","STP"], c:1 },
+    { p: "¿Qué es un patch panel?", o:["Un switch","Panel de parcheo para conexiones","Un router","Un cable"], c:1 },
+    { p: "¿Qué conecta el patch panel?", o:["PCs entre sí","Cableado horizontal con switch","ISP con router","Fibra con UTP"], c:1 },
+    { p: "Las rosetas son:", o:["RJ-45 hembra","RJ-45 macho","Conectores de fibra","Switches pequeños"], c:0 },
+    { p: "¿Dónde se encuentran las rosetas?", o:["En el switch","En las áreas de trabajo","En el backbone","En el ISP"], c:1 },
+    { p: "Los latiguillos tienen conectores:", o:["RJ-45 hembra","RJ-45 macho en ambos extremos","Uno macho y uno hembra","Fibra LC"], c:1 },
+    { p: "TRAMPA: Estándares de pinado de latiguillos:", o:["568-A y 568-B","569-A y 569-B","802.3","RJ-45"], c:0 },
+    { p: "¿Qué es un cable paralelo?", o:["Cable con mismo pinado en ambos extremos","Cable cruzado","Cable de fibra","Cable coaxial"], c:0 },
+    { p: "¿Qué es un cable cruzado?", o:["Cable defectuoso","Cable con pinado diferente en extremos","Cable paralelo","Cable de backbone"], c:1 },
+    { p: "¿Para qué sirve el cable cruzado?", o:["Conectar PC-switch","Conectar PC-PC o switch-switch","Solo para fibra","Cableado vertical"], c:1 },
+    { p: "TRAMPA: ¿Cuál es el límite de superficie por sala de telecomunicaciones?", o:["500m²","1000m²","1500m²","2000m²"], c:1 },
+    { p: "El armario de comunicaciones contiene:", o:["Solo cables","Patch panel y switches","Solo servidores","Impresoras"], c:1 },
+    { p: "TRAMPA: ¿Puede haber uniones en el cable horizontal?", o:["Sí, hasta 2","No, debe ser continuo","Sí, sin límite","Solo en fibra"], c:1 },
+    { p: "¿Qué evitar en la sala de equipos?", o:["Iluminación","Fuentes de ruido electromagnético","Switches","Patch panels"], c:1 },
+
+    // TEMA 6: FUNCIONES DEL NIVEL DE ENLACE (20 preguntas)
+    { p: "El nivel físico realiza:", o:["Comunicación","Transmisión de señales","Control de errores","Ruteo"], c:1 },
+    { p: "TRAMPA: En el nivel físico hay:", o:["Comunicación pero no transmisión","Transmisión pero no comunicación","Ambas","Ninguna"], c:1 },
+    { p: "El nivel de enlace asegura:", o:["Ruteo","Mensaje libre de errores al destinatario","Solo velocidad","Conexión a Internet"], c:1 },
+    { p: "Subcapas del nivel de enlace:", o:["TCP/UDP","LLC y MAC","IP/ICMP","HTTP/FTP"], c:1 },
+    { p: "LLC se relaciona con:", o:["Capa inferior","Capa superior","Hardware","Medio físico"], c:1 },
+    { p: "LLC está implementado en:", o:["Hardware","Software (driver)","Firmware","BIOS"], c:1 },
+    { p: "MAC se relaciona con:", o:["Capa superior","Capa inferior","Router","Switch capa 3"], c:1 },
+    { p: "MAC está implementado en:", o:["Software","Hardware en tarjeta de red","Driver","Sistema operativo"], c:1 },
+    { p: "Funciones del nivel de enlace NO incluyen:", o:["Tramado","Ruteo IP","Control de flujo","Direccionamiento físico"], c:1 },
+    { p: "¿Cuál es una función del nivel de enlace?", o:["Asignar IP","Control de acceso al medio","Enrutamiento","DNS"], c:1 },
+    { p: "¿Qué es el tramado?", o:["Crear tramas con cabecera y cola","Enviar bits","Rutear paquetes","Cifrar datos"], c:0 },
+    { p: "Estructura básica de una trama:", o:["Solo datos","Cabecera, datos, cola","Solo cabecera","Cabecera y datos"], c:1 },
+    { p: "En el emisor, el nivel de enlace:", o:["Encapsula paquete de red en trama","Solo envía bits","Rutea","Hace ping"], c:0 },
+    { p: "En el receptor, el nivel de enlace:", o:["Solo recibe bits","Extrae cabecera y cola, comprueba errores","Rutea","Asigna IP"], c:1 },
+    { p: "TRAMPA: ¿El nivel de enlace puede descartar tramas?", o:["No, nunca","Sí, si hay errores","Solo en WiFi","Solo en Ethernet"], c:1 },
+    { p: "¿Qué hace el nivel de enlace con los datos del nivel de red?", o:["Los descarta","Los encapsula en el campo datos de la trama","Los rutea","Los cifra"], c:1 },
+    { p: "Control de acceso al medio es:", o:["Ruteo","Gestionar quién transmite y cuándo","Solo para WiFi","Asignar IPs"], c:1 },
+    { p: "Control de flujo indica:", o:["Velocidad del cable","Cuántos datos transmitir antes de ACK","Errores","Ruta de paquetes"], c:1 },
+    { p: "Control de errores se realiza por:", o:["Velocidad","Redundancia","Repetición","Ping"], c:1 },
+    { p: "Direccionamiento físico se refiere a:", o:["IP","Dirección MAC","Puerto","URL"], c:1 },
+
+    // TEMA 6: FORMATOS DE TRAMA (15 preguntas)
+    { p: "PPP es protocolo de nivel:", o:["Físico","Enlace de datos","Red","Transporte"], c:1 },
+    { p: "PPP permite comunicación:", o:["En LAN","Directa entre dos equipos","Solo Internet","Solo fibra"], c:1 },
+    { p: "¿Dónde se utiliza PPP?", o:["Solo Ethernet","Cable serie, líneas telefónicas, WiFi, fibra","Solo WiFi","Solo LAN"], c:1 },
+    { p: "Campos de trama PPP incluyen:", o:["Solo datos","Indicador, dirección, control, protocolo, datos, FCS","Solo IP","Solo MAC"], c:1 },
+    { p: "TRAMPA: Tamaño del campo Indicador en PPP:", o:["1 byte","2 bytes","4 bytes","Variable"], c:0 },
+    { p: "Tamaño del campo FCS en PPP:", o:["1 byte","2 o 4 bytes","6 bytes","8 bytes"], c:1 },
+    { p: "Formato de trama de Ethernet incluye:", o:["Solo datos","Preámbulo, dir. destino, dir. fuente, protocolo, datos, FCS","Solo MAC","Solo IP"], c:1 },
+    { p: "Tamaño del Preámbulo en Ethernet:", o:["6 bytes","8 bytes","4 bytes","2 bytes"], c:1 },
+    { p: "Tamaño de dirección MAC en Ethernet:", o:["4 bytes","6 bytes","8 bytes","12 bytes"], c:1 },
+    { p: "Campo Protocolo/Longitud en Ethernet:", o:["1 byte","2 bytes","4 bytes","6 bytes"], c:1 },
+    { p: "TRAMPA: Tamaño mínimo del campo DATOS en Ethernet:", o:["0 bytes","46 bytes","64 bytes","1500 bytes"], c:1 },
+    { p: "Tamaño máximo del campo DATOS en Ethernet:", o:["100 bytes","1500 bytes","2000 bytes","9000 bytes"], c:1 },
+    { p: "Tamaño del FCS en Ethernet:", o:["2 bytes","4 bytes","6 bytes","8 bytes"], c:1 },
+    { p: "¿Qué indica el campo Protocolo en PPP?", o:["Tipo de hardware","Tipo de protocolo encapsulado","Velocidad","Longitud"], c:1 },
+    { p: "¿Qué es el FCS?", o:["Control de flujo","Secuencia de verificación de trama (CRC)","Velocidad","Dirección"], c:1 },
+
+    // TEMA 6: CONTROL DE ACCESO AL MEDIO (20 preguntas)
+    { p: "TDM significa:", o:["Multiplexación por división de datos","Multiplexación por división en tiempo","Multiplexación duplex","Token digital"], c:1 },
+    { p: "En TDM cada usuario:", o:["Transmite siempre","Espera su turno y obtiene acceso total brevemente","Comparte frecuencia","Usa token"], c:1 },
+    { p: "FDM significa:", o:["Multiplexación por frecuencia","Multiplexación por división en frecuencia","Full duplex","Fibra digital"], c:1 },
+    { p: "En FDM cada usuario obtiene:", o:["Todo el tiempo","Una banda de frecuencia exclusiva","Un token","Turno aleatorio"], c:1 },
+    { p: "TRAMPA: ¿TDM se usa en?", o:["Solo Internet","Red telefónica","Solo Ethernet","Solo WiFi"], c:1 },
+    { p: "¿FDM se usa en?", o:["Solo Ethernet","ATM, SDH y telefonía móvil","Solo WiFi","Solo cable"], c:1 },
+    { p: "Medio compartido con acceso controlado:", o:["Tiene colisiones","Sin colisiones","Solo WiFi","Solo hub"], c:1 },
+    { p: "Ejemplos de acceso controlado:", o:["CSMA/CD","Sondeo y Paso de testigo","Solo Ethernet","CSMA/CA"], c:1 },
+    { p: "Acceso basado en contienda:", o:["Sin colisiones","Tiene colisiones","Solo fibra","Solo token"], c:1 },
+    { p: "Ejemplos de acceso en contienda:", o:["Token Ring","CSMA/CD (Ethernet) y CSMA/CA (WiFi)","Solo sondeo","FDM"], c:1 },
+    { p: "¿Qué es el testigo (token)?", o:["Un cable","Una trama especial","Una dirección","Un protocolo"], c:1 },
+    { p: "Un equipo envía datos si:", o:["Quiere","Tiene el testigo","Detecta colisión","Espera turno"], c:1 },
+    { p: "TRAMPA: En Token Ring, ¿hay colisiones?", o:["Sí","No","A veces","Solo en congestión"], c:1 },
+    { p: "Tecnologías que usan paso de testigo:", o:["Ethernet","Token Bus, Token Ring, FDDI","WiFi","PPP"], c:1 },
+    { p: "Desventaja del paso de testigo:", o:["Muchas colisiones","Ineficaz con muchos equipos esperando turno","Muy rápido","No funciona"], c:1 },
+    { p: "CSMA/CD significa:", o:["Control sin detección","Acceso con detección de portadora y colisiones","Solo prevención","Token digital"], c:1 },
+    { p: "En CSMA/CD, antes de transmitir:", o:["Se transmite directamente","Se comprueba que no hay tráfico","Se pide token","Se espera ACK"], c:1 },
+    { p: "Si se detecta colisión en CSMA/CD:", o:["Se ignora","Se deja de transmitir y se espera tiempo aleatorio","Se continúa","Se pide token"], c:1 },
+    { p: "Periodo de contención es:", o:["Tiempo fijo","Tiempo aleatorio de espera tras colisión","Tiempo de transmisión","Velocidad"], c:1 },
+    { p: "TRAMPA: CSMA/CD se usa en:", o:["WiFi","Ethernet con hub","Switch","Token Ring"], c:1 },
+];
+
+let preguntasSeleccionadas = [];
+let respuestasUsuario = [];
+let index = 0;
+let correctas = 0;
+let fallos = 0;
+
+document.getElementById("startTest").addEventListener("click", iniciarTest);
+
+function iniciarTest() {
+    // Seleccionar 20 preguntas aleatorias de las 100
+    preguntasSeleccionadas = [...preguntas].sort(() => Math.random() - 0.5).slice(0, 20);
+    respuestasUsuario = [];
+    index = 0;
+    correctas = 0;
+    fallos = 0;
+    document.getElementById("quizContainer").classList.remove("hidden");
+    document.getElementById("result").classList.add("hidden");
+    mostrarPregunta();
+}
+
+function mostrarPregunta() {
+    const q = preguntasSeleccionadas[index];
+    document.getElementById("question").innerText = (index + 1) + ". " + q.p;
+
+    let answersHTML = "";
+    q.o.forEach((op, i) => {
+        answersHTML += `<button onclick="responder(${i})">${op}</button>`;
+    });
+
+    document.getElementById("answers").innerHTML = answersHTML;
+}
+
+function responder(sel) {
+    const preguntaActual = preguntasSeleccionadas[index];
+    const esCorrecta = sel === preguntaActual.c;
+    
+    // Guardar respuesta del usuario
+    respuestasUsuario.push({
+        pregunta: preguntaActual.p,
+        opciones: preguntaActual.o,
+        respuestaUsuario: sel,
+        respuestaCorrecta: preguntaActual.c,
+        esCorrecta: esCorrecta
+    });
+
+    if (esCorrecta) {
+        correctas++;
+    } else {
+        fallos++;
+    }
+
+    index++;
+    if (index >= preguntasSeleccionadas.length) {
+        mostrarResultado();
+    } else {
+        mostrarPregunta();
+    }
+}
+
+function mostrarResultado() {
+    let puntos = correctas - Math.floor(fallos / 3);
+    if (puntos < 0) puntos = 0;
+    let nota = (puntos / 20) * 10;
+    nota = nota.toFixed(2);
+
+    // Generar HTML del resultado
+    let resultHTML = `
+        <h2>📊 Resultados del Test</h2>
+        <p><strong>✅ Correctas:</strong> ${correctas}</p>
+        <p><strong>❌ Fallos:</strong> ${fallos}</p>
+        <p><strong>🎯 Puntos finales (3 fallos restan 1 acierto):</strong> ${puntos}</p>
+        <h3>📝 Nota final: ${nota}/10</h3>
+    `;
+
+    // Mostrar preguntas que falló
+    const preguntasFalladas = respuestasUsuario.filter(r => !r.esCorrecta);
+    if (preguntasFalladas.length > 0) {
+        resultHTML += `
+            <div class="review-section">
+                <h2 style="color: #f38ba8;">❌ Preguntas que has fallado (${preguntasFalladas.length}):</h2>
+        `;
+        preguntasFalladas.forEach((item, idx) => {
+            resultHTML += `
+                <div class="review-item incorrect">
+                    <div class="review-question">${idx + 1}. ${item.pregunta}</div>
+                    <div class="review-answer user-answer">Tu respuesta: ${item.opciones[item.respuestaUsuario]}</div>
+                    <div class="review-answer correct-answer">✓ Respuesta correcta: ${item.opciones[item.respuestaCorrecta]}</div>
+                </div>
+            `;
+        });
+        resultHTML += `</div>`;
+    }
+
+    // Mostrar preguntas que acertó
+    const preguntasCorrectas = respuestasUsuario.filter(r => r.esCorrecta);
+    if (preguntasCorrectas.length > 0) {
+        resultHTML += `
+            <div class="review-section">
+                <h2 style="color: #a6e3a1;">✅ Preguntas que has acertado (${preguntasCorrectas.length}):</h2>
+        `;
+        preguntasCorrectas.forEach((item, idx) => {
+            resultHTML += `
+                <div class="review-item correct">
+                    <div class="review-question">${idx + 1}. ${item.pregunta}</div>
+                    <div class="review-answer correct-answer">✓ Tu respuesta: ${item.opciones[item.respuestaUsuario]}</div>
+                </div>
+            `;
+        });
+        resultHTML += `</div>`;
+    }
+
+    resultHTML += `<button id="startTest" onclick="iniciarTest()" style="margin-top: 30px;">🔄 Hacer otro test</button>`;
+
+    document.getElementById("quizContainer").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("result").innerHTML = resultHTML;
+}
+</script>
+</body>
+</html>
